@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Urban Shuttle Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-variant": "#343539",
+                      "on-primary-fixed": "#002022",
+                      "surface": "#121317",
+                      "secondary-container": "#ff5e07",
+                      "primary": "#dbfcff",
+                      "on-tertiary-fixed": "#1b1b1d",
+                      "on-tertiary": "#303032",
+                      "surface-container-highest": "#343539",
+                      "inverse-surface": "#e3e2e7",
+                      "surface-container-high": "#292a2e",
+                      "on-primary": "#00363a",
+                      "tertiary-fixed": "#e4e2e4",
+                      "error": "#ffb4ab",
+                      "inverse-on-surface": "#2f3034",
+                      "on-secondary-fixed": "#370e00",
+                      "tertiary-container": "#dbd8db",
+                      "surface-container-lowest": "#0d0e12",
+                      "error-container": "#93000a",
+                      "surface-bright": "#38393d",
+                      "surface-container-low": "#1a1b1f",
+                      "on-tertiary-container": "#5f5e60",
+                      "on-secondary-fixed-variant": "#802a00",
+                      "on-primary-container": "#006970",
+                      "surface-container": "#1e1f23",
+                      "on-secondary": "#5a1b00",
+                      "outline-variant": "#3b494b",
+                      "secondary-fixed-dim": "#ffb59a",
+                      "primary-fixed-dim": "#00dbe9",
+                      "on-tertiary-fixed-variant": "#474649",
+                      "surface-dim": "#121317",
+                      "on-surface": "#e3e2e7",
+                      "background": "#121317",
+                      "tertiary": "#f8f4f7",
+                      "surface-tint": "#00dbe9",
+                      "tertiary-fixed-dim": "#c8c6c8",
+                      "on-error": "#690005",
+                      "inverse-primary": "#006970",
+                      "on-error-container": "#ffdad6",
+                      "on-background": "#e3e2e7",
+                      "primary-container": "#00f0ff",
+                      "secondary-fixed": "#ffdbce",
+                      "secondary": "#ffb59a",
+                      "primary-fixed": "#7df4ff",
+                      "on-surface-variant": "#b9cacb",
+                      "on-secondary-container": "#531900",
+                      "on-primary-fixed-variant": "#004f54",
+                      "outline": "#849495"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "component-gap": "12px",
+                      "container-padding": "32px",
+                      "unit": "8px",
+                      "gutter": "16px"
+              },
+              "fontFamily": {
+                      "display-speed": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "body-md": ["Inter"],
+                      "data-mono-lg": ["JetBrains Mono"],
+                      "data-mono-sm": ["JetBrains Mono"],
+                      "label-caps": ["Inter"]
+              },
+              "fontSize": {
+                      "display-speed": ["120px", { "lineHeight": "120px", "letterSpacing": "-0.04em", "fontWeight": "700" }],
+                      "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                      "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                      "body-lg": ["20px", { "lineHeight": "28px", "fontWeight": "400" }],
+                      "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                      "data-mono-lg": ["24px", { "lineHeight": "32px", "fontWeight": "500" }],
+                      "data-mono-sm": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+                      "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700" }]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        body {
+            background-color: #000000; /* Pure black base as per guidelines */
+            color: #e3e2e7;
+            margin: 0;
+            overflow: hidden;
+            width: 1280px;
+            height: 800px;
+        }
+        
+        .neo-surface {
+            background-color: #1A1A1C;
+            box-shadow: -2px -2px 10px rgba(255, 255, 255, 0.02), 4px 4px 15px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .neo-inset {
+            background-color: #1A1A1C;
+            box-shadow: inset 4px 4px 10px rgba(0, 0, 0, 0.8), inset -2px -2px 5px rgba(255, 255, 255, 0.03);
+        }
+
+        .speed-ring {
+            stroke-dasharray: 628; /* 2 * pi * r (r=100 approx) */
+            stroke-dashoffset: 200; /* Adjust for current speed */
+            transition: stroke-dashoffset 0.5s ease-out;
+            filter: drop-shadow(0 0 8px rgba(0, 240, 255, 0.6));
+        }
+        
+        .speed-ring-bg {
+            stroke-dasharray: 628;
+            stroke-dashoffset: 0;
+            opacity: 0.15;
+        }
+        
+        .throttle-bar {
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+        }
+    </style>
+</head>
+<body class="flex bg-black text-on-surface select-none">
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-0 h-full flex flex-col py-gutter bg-surface-container docked h-screen w-64 border-r border-surface-container-high z-50">
+<!-- Header -->
+<div class="px-container-padding mb-8">
+<div class="flex items-center gap-4 mb-2">
+<div class="w-12 h-12 rounded-full neo-surface flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A clinical, high-contrast, black-and-white vector silhouette of a public transit shuttle driver in uniform, rendered in a minimalist, modern icon style suitable for a professional dark-mode dashboard interface. The background is pure dark grey." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGojQPxsoeNzuM84IM1EdCH-uym18rkGyyKkCZEJ-veMUSPUC6qzzR6CChf2Te2FkuX0l7ojjWp_61mRUrVPYCsp6DNOvtfqARf0JvJIvr_PeEg6DTeSzwUAbNQ2rf8rSz3RnW0VmWIQD7UzSEuMDFT_rDie-zgcX4-wysHLF-2-oeoEHnQsCElUi5OiDUhwYfHQVSNzDHK9Q6TcqAdpCrSMmN68jZjag4FB-1rr5qJycjPDeYn72Ek7gcLJb6Hp-LwjDFzlPWBlM"/>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md text-primary truncate">Shuttle 08</h1>
+<p class="font-label-caps text-label-caps text-primary-fixed-dim">Active Service</p>
+</div>
+</div>
+</div>
+<!-- Main Tabs -->
+<div class="flex-1 flex flex-col gap-2 px-2">
+<!-- Active Tab -->
+<a class="flex items-center gap-4 px-4 py-3 bg-secondary-container text-on-secondary-container rounded-xl mx-2 my-1 transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-label-caps text-label-caps">Dashboard</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-variant rounded-xl mx-2 my-1 transition-all scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">route</span>
+<span class="font-label-caps text-label-caps">Route</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-variant rounded-xl mx-2 my-1 transition-all scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">ac_unit</span>
+<span class="font-label-caps text-label-caps">Climate</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-variant rounded-xl mx-2 my-1 transition-all scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-caps text-label-caps">Passenger Info</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-variant rounded-xl mx-2 my-1 transition-all scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">memory</span>
+<span class="font-label-caps text-label-caps">Diagnostics</span>
+</a>
+</div>
+<!-- Footer Tabs -->
+<div class="flex flex-col gap-2 px-2 mt-auto">
+<a class="flex items-center gap-4 px-4 py-3 text-error hover:bg-error-container/20 rounded-xl mx-2 my-1 transition-all scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">warning</span>
+<span class="font-label-caps text-label-caps">Safety Alert</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-variant rounded-xl mx-2 my-1 transition-all scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">headset_mic</span>
+<span class="font-label-caps text-label-caps">Support</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="ml-64 flex-1 h-full relative p-container-padding grid grid-cols-12 grid-rows-6 gap-gutter">
+<!-- Top Status Bar -->
+<div class="col-span-12 row-span-1 flex justify-between items-start">
+<div class="flex gap-4">
+<div class="neo-surface px-4 py-2 rounded-lg flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface-variant">SYS_OK</span>
+</div>
+<div class="neo-surface px-4 py-2 rounded-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container text-[18px]">wifi</span>
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface-variant">4G LTE</span>
+</div>
+</div>
+<div class="neo-surface px-6 py-2 rounded-lg flex items-center gap-4">
+<span class="material-symbols-outlined text-primary-container">battery_charging_full</span>
+<span class="font-data-mono-lg text-data-mono-lg text-primary">84%</span>
+<div class="w-32 h-2 bg-surface-container-high rounded-full overflow-hidden neo-inset">
+<div class="h-full bg-primary-container w-[84%]"></div>
+</div>
+</div>
+</div>
+<!-- Centerpiece: Speedometer & Odometer -->
+<div class="col-span-6 col-start-4 row-span-4 flex flex-col items-center justify-center relative">
+<div class="relative w-[400px] h-[400px] flex items-center justify-center neo-surface rounded-full">
+<!-- SVG Gauge -->
+<svg class="absolute inset-0 w-full h-full transform -rotate-90" viewbox="0 0 220 220">
+<circle class="speed-ring-bg" cx="110" cy="110" fill="none" r="100" stroke="#292a2e" stroke-width="8"></circle>
+<!-- Highlight for 50km/h critical zone -->
+<circle cx="110" cy="110" fill="none" opacity="0.4" r="100" stroke="#ff5e07" stroke-dasharray="628" stroke-dashoffset="520" stroke-width="2"></circle>
+<!-- Actual Speed Ring -->
+<circle class="speed-ring" cx="110" cy="110" fill="none" r="100" stroke="#00f0ff" stroke-linecap="round" stroke-width="8"></circle>
+</svg>
+<div class="text-center z-10 flex flex-col items-center">
+<span class="font-display-speed text-display-speed text-primary block leading-none tracking-tighter" id="speed-display">42</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant mt-2 tracking-widest uppercase">km/h</span>
+</div>
+<!-- Speed Scale Markers (Decorative) -->
+<div class="absolute inset-4 rounded-full border border-surface-container/30 pointer-events-none"></div>
+<div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center">
+<span class="font-data-mono-sm text-data-mono-sm text-primary-fixed-dim bg-surface-container-high/50 px-3 py-1 rounded-full backdrop-blur-sm border border-outline-variant/30">MAX 60</span>
+</div>
+</div>
+<!-- Odometer -->
+<div class="mt-8 neo-inset px-8 py-3 rounded-xl border border-surface-container flex items-center gap-4">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">ODO</span>
+<span class="font-data-mono-lg text-data-mono-lg text-primary tracking-widest">001452</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">km</span>
+</div>
+</div>
+<!-- Right Side: Throttle/Acceleration -->
+<div class="col-span-2 col-start-11 row-span-4 flex flex-col items-end justify-center py-8">
+<div class="neo-surface p-4 rounded-2xl h-full flex flex-col items-center justify-between w-24">
+<span class="font-label-caps text-label-caps text-primary-fixed-dim uppercase">PWR</span>
+<div class="flex-1 w-8 my-4 neo-inset rounded-full relative overflow-hidden flex items-end p-1">
+<!-- Throttle Fill -->
+<div class="w-full bg-primary-container rounded-full throttle-bar transition-all duration-300" style="height: 65%;"></div>
+<!-- Scale marks -->
+<div class="absolute inset-0 w-full h-full flex flex-col justify-between py-4 opacity-30 pointer-events-none">
+<div class="w-4 h-[1px] bg-white ml-2"></div>
+<div class="w-2 h-[1px] bg-white ml-2"></div>
+<div class="w-4 h-[1px] bg-white ml-2"></div>
+<div class="w-2 h-[1px] bg-white ml-2"></div>
+<div class="w-4 h-[1px] bg-white ml-2"></div>
+</div>
+</div>
+<span class="font-data-mono-sm text-data-mono-sm text-primary">65%</span>
+</div>
+</div>
+<!-- Left Side: Secondary Telemetry (Empty/Minimal for now to balance) -->
+<div class="col-span-2 col-start-1 row-span-4 flex flex-col justify-center gap-6">
+<div class="neo-surface p-4 rounded-xl flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">directions_transit</span>
+<span class="font-data-mono-sm text-data-mono-sm text-primary">N</span>
+</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant">GEAR</div>
+</div>
+<div class="neo-surface p-4 rounded-xl flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<span class="material-symbols-outlined text-secondary-fixed-dim text-[20px]">thermostat</span>
+<span class="font-data-mono-sm text-data-mono-sm text-secondary-fixed-dim">22°C</span>
+</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant">CABIN</div>
+</div>
+</div>
+<!-- Bottom Row: Environmental/Contextual Info -->
+<div class="col-span-12 row-span-1 row-start-6 flex items-end justify-between">
+<div class="flex gap-4">
+<div class="px-4 py-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant">schedule</span>
+<span class="font-data-mono-lg text-data-mono-lg text-on-surface">14:22</span>
+</div>
+<div class="px-4 py-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant">calendar_today</span>
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface-variant">OCT 24</span>
+</div>
+</div>
+<div class="neo-surface px-6 py-3 rounded-xl flex items-center gap-4">
+<span class="material-symbols-outlined text-primary-fixed-dim">location_on</span>
+<span class="font-body-md text-body-md text-on-surface">Next Stop: Transit Center N</span>
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface-variant ml-4">1.2 km</span>
+</div>
+</div>
+</main>
+<script>
+        // Minimal script to add slight organic fluctuation to speed/power for realism
+        document.addEventListener('DOMContentLoaded', () => {
+            const speedDisplay = document.getElementById('speed-display');
+            const speedRing = document.querySelector('.speed-ring');
+            const throttleBar = document.querySelector('.throttle-bar');
+            
+            let currentSpeed = 42;
+            let currentThrottle = 65;
+            
+            setInterval(() => {
+                // Fluctuate speed slightly
+                if(Math.random() > 0.7) {
+                    const diff = (Math.random() - 0.5) * 1.5;
+                    currentSpeed = Math.max(0, Math.min(60, currentSpeed + diff));
+                    
+                    // Update text
+                    speedDisplay.textContent = Math.round(currentSpeed);
+                    
+                    // Update SVG ring (628 max dashoffset = 0 speed, 0 dashoffset = max speed)
+                    // Scale: 0 to 60 km/h maps to 628 to ~150 dashoffset (leaving a gap)
+                    const offset = 628 - (currentSpeed / 60) * 450;
+                    speedRing.style.strokeDashoffset = offset;
+                    
+                    // Change color to warning if approaching 50
+                    if (currentSpeed >= 48) {
+                        speedRing.style.stroke = '#ff5e07';
+                        speedDisplay.classList.replace('text-primary', 'text-secondary-container');
+                    } else {
+                        speedRing.style.stroke = '#00f0ff';
+                        speedDisplay.classList.replace('text-secondary-container', 'text-primary');
+                    }
+                }
+                
+                // Fluctuate throttle based on speed change
+                if(Math.random() > 0.5) {
+                    const throttleDiff = (Math.random() - 0.5) * 5;
+                    currentThrottle = Math.max(20, Math.min(85, currentThrottle + throttleDiff));
+                    throttleBar.style.height = `${currentThrottle}%`;
+                    throttleBar.nextElementSibling.nextElementSibling.textContent = `${Math.round(currentThrottle)}%`;
+                }
+            }, 500);
+        });
+    </script>
+</body></html>

@@ -1,56 +1,93 @@
-# C++ objects and libs
-*.slo
-*.lo
-*.o
-*.a
-*.la
-*.lai
-*.so
-*.so.*
-*.dll
-*.dylib
+# =============================================================================
+# .gitignore — ShuttleDashboard (Qt/QML, cible Linux / Raspberry Pi 4)
+# =============================================================================
 
-# Qt-es
-object_script.*.Release
-object_script.*.Debug
-*_plugin_import.cpp
-/.qmake.cache
-/.qmake.stash
+# ---- Répertoires de build Qt / CMake ---------------------------------------
+build/
+build-*/
+Build/
+out/
+CMakeCache.txt
+CMakeFiles/
+CMakeLists.txt.user*
+compile_commands.json
+Makefile*
+
+# ---- qmake / fichiers projet Qt --------------------------------------------
 *.pro.user
 *.pro.user.*
 *.qbs.user
 *.qbs.user.*
+/.qmake.cache
+/.qmake.stash
+
+# ---- Fichiers générés par le toolchain Qt (moc / rcc / uic / qml) ----------
 *.moc
 moc_*.cpp
 moc_*.h
 qrc_*.cpp
 ui_*.h
+object_script.*.Release
+object_script.*.Debug
+*_plugin_import.cpp
+*_qmlcache.qrc
 *.qmlc
 *.jsc
-Makefile*
-*build-*
-build/
 *.qm
 *.prl
 *.qmlls.ini
 
-# Qt unit tests
-target_wrapper.*
+# ---- Objets et bibliothèques compilés --------------------------------------
+*.o
+*.obj
+*.a
+*.la
+*.lai
+*.lo
+*.slo
+*.so
+*.so.*
+*.dll
+*.dylib
 
-# QtCreator
+# ---- Qt Creator -------------------------------------------------------------
 *.autosave
-
-# QtCreator Qml
+*creator.user*
 *.qmlproject.user
 *.qmlproject.user.*
 
-# QtCreator CMake
-CMakeLists.txt.user*
+# ---- Tests Qt ---------------------------------------------------------------
+target_wrapper.*
 
-# QtCreator 4.8< compilation database
-compile_commands.json
+# ---- Clutter système d'exploitation ------------------------------------------
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+# Linux
+*~
+.directory
+.Trash-*
 
-# QtCreator local machine specific files for imported projects
-*creator.user*
+# ---- Artefacts d'agents IA ---------------------------------------------------
+/.claude
+.claude/
+.cursor/
+.windsurf/
+.aider*
+.stitch/
+*.chat.md
+ai-chat*.md
+CLAUDE.local.md
 
-*_qmlcache.qrc
+# ---- Documents internes hors périmètre du livrable jury ----------------------
+challenge_technique_navette_electrique.md
+Electric vehicle project.md
+CLAUDE.md
+documentation_all.md
