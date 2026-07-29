@@ -34,7 +34,7 @@ sudo apt-get update && sudo apt-get install -y \
     qt6-base-dev qt6-declarative-dev \
     qml6-module-qtquick \
     qml6-module-qtquick-controls \
-    qml6-module-qtquick-templates2 \
+    qml6-module-qtquick-templates \
     qml6-module-qtquick-window \
     qml6-module-qtqml-workerscript
 ```
@@ -72,6 +72,16 @@ Translations.js                → i18n minimaliste (fr/en)
 **Bascule vers le bus CAN réel.** Le jour où le firmware pédale (Groupe III) expose le bus CAN réel, il suffit de remplacer `VehicleDataSimulator.qml` par un composant équivalent (ex. `VehicleCanBusReader.qml`) qui ouvre un socket SocketCAN, décode les trames et alimente les mêmes trois propriétés (`throttlePercent`, `speedKmh`, `odometerKm`). Aucun autre fichier du projet n'a besoin d'être modifié.
 
 Pour le détail des choix de durcissement (portabilité Linux, cohérence physique, performance de rendu à 60 FPS), voir [`dashboard/RAPPORT_AUDIT_QA.md`](dashboard/RAPPORT_AUDIT_QA.md).
+
+### Scalabilité et Navigation
+
+La sidebar (`NavSidebar.qml`) applique la même règle de découplage que la donnée véhicule, cette fois à la structure de l'écran : elle ne connaît aucun des contenus qu'elle déclenche, et se contente d'émettre un signal `itemSelected(key)`. C'est `Main.qml` qui décide, via un `Loader` (architecture `StackLayout`/`Loader`), quel composant instancier pour l'entrée active (`activeNav`).
+
+Seule l'entrée « Tableau de bord » charge un contenu réel (`SpeedometerGauge`, `ThrottleGauge`, odomètre). Les quatre autres entrées de la maquette (Itinéraire, Climatisation, Info passagers, Diagnostics) chargent `Placeholder.qml`, un composant de rendu pur qui affiche un message d'espace réservé neutre plutôt qu'un contenu inventé.
+
+Ce choix est délibéré : nous avons choisi de ne pas simuler de fausses données météo, de diagnostic ou de trajet pour ces écrans. Le périmètre technique de cette évaluation porte sur le découplage du flux de données CAN (voir [Architecture](#architecture) ci-dessus), pas sur la richesse visuelle de chaque écran secondaire — peupler ces vues de données inventées aurait ajouté du volume sans rien démontrer de plus sur ce critère, au risque de brouiller la lecture de ce qui est réellement mesuré/simulé par rapport à ce qui serait arbitrairement affiché.
+
+`Placeholder.qml` démontre malgré tout que l'architecture est prête à accueillir ces futurs modules : il suffit, pour chaque écran, d'ajouter un composant de rendu dédié (sur le modèle de `SpeedometerGauge.qml`) et de le brancher au `Loader` existant, sans toucher ni à la sidebar ni au reste de la mise en page — le même principe de développement en parallèle qui rend la bascule vers le bus CAN triviale s'applique donc aussi à l'ajout de nouveaux écrans.
 
 ## Structure des données simulées
 

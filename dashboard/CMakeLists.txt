@@ -17,15 +17,12 @@ qt_standard_project_setup()
 
 qt_add_executable(ShuttleDashboard main.cpp)
 
-# Qt >= 6.8 introduit la policy QTP0001 (prefixe de ressource ":/qt/qml/")
-# sans l'activer par defaut, pour compatibilite ascendante. main.cpp charge
-# explicitement "qrc:/qt/qml/Dashboard/Main.qml" (schema genere par
-# qt_add_qml_module attendu) : il faut donc forcer le comportement NEW pour
-# que la ressource existe bien a ce chemin sur Qt 6.8+, sans quoi
-# QQmlApplicationEngine echoue au chargement ("No such file or directory").
-if(Qt6_VERSION VERSION_GREATER_EQUAL 6.8)
-    qt_policy(SET QTP0001 NEW)
-endif()
+# Pas de policy QTP0001 forcee ici : le prefixe de ressource genere par
+# qt_add_qml_module differe selon la version Qt (">=6.8" vs "<6.8" -- voir
+# main.cpp), et le forcer ici obligerait a maintenir le meme seuil de version
+# dans deux fichiers. main.cpp sonde directement les ressources embarquees au
+# demarrage et reste donc correct quelle que soit la valeur par defaut retenue
+# ici -- inutile de la figer.
 
 # "pragma Singleton" dans Theme.qml ne suffit pas a lui seul : sans cette
 # marque explicite (posee AVANT qt_add_qml_module, qui lit l'etat des
@@ -49,6 +46,7 @@ qt_add_qml_module(ShuttleDashboard
         SpeedometerGauge.qml
         ThrottleGauge.qml
         NavSidebar.qml
+        Placeholder.qml
         Translations.js
         Theme.qml
 )

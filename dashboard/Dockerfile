@@ -40,7 +40,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         qt6-declarative-dev \
         qml6-module-qtquick \
         qml6-module-qtquick-controls \
-        qml6-module-qtquick-templates2 \
+        qml6-module-qtquick-templates \
         qml6-module-qtquick-window \
         qml6-module-qtqml-workerscript \
         libgl1-mesa-dev \

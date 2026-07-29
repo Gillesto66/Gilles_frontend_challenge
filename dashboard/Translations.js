@@ -22,7 +22,7 @@ var fr = {
     navClimate: "Climatisation",
     navPassenger: "Info passagers",
     navDiagnostics: "Diagnostics",
-    placeholderModule: "Module en cours de developpement"
+    placeholderModule: "Module en attente d'integration du flux de donnees. Architecture prete."
 };
 
 var en = {
@@ -38,7 +38,7 @@ var en = {
     navClimate: "Climate",
     navPassenger: "Passenger Info",
     navDiagnostics: "Diagnostics",
-    placeholderModule: "Module under development"
+    placeholderModule: "Module awaiting data-flow integration. Architecture ready."
 };
 
 function get(lang) {

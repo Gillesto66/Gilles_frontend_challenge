@@ -15,20 +15,21 @@ import "Translations.js" as I18n
 // n'a besoin d'AUCUNE modification.
 //
 // Style visuel : design system "Lumina Transit" (cf. maquette/DESIGN.md),
-// jetons centralises dans Theme.qml. SpeedometerGauge, ThrottleGauge et
-// NavSidebar sont de purs composants de rendu : ils recoivent des valeurs
-// (nombres, cle active) et les affichent, sans jamais connaitre l'origine
-// (simulee aujourd'hui, CAN demain) de ces nombres.
+// jetons centralises dans Theme.qml. SpeedometerGauge, ThrottleGauge,
+// NavSidebar et Placeholder sont de purs composants de rendu : ils recoivent
+// des valeurs (nombres, cle active, texte) et les affichent, sans jamais
+// connaitre l'origine (simulee aujourd'hui, CAN demain) de ces nombres.
 //
 // Choix assume : contrairement a la maquette de reference, aucune donnee
 // non couverte par le contrat de VehicleDataSimulator (batterie, 4G, vitesse
 // enclenchee, temperature cabine, prochain arret...) n'est affichee ici --
 // afficher des valeurs fictives aurait ete trompeur pour une evaluation
 // technique. Seuls l'horloge et la date (systeme, reelles) completent le
-// bandeau du bas. Meme logique pour la sidebar : seul "Dashboard" charge un
-// contenu reel, les autres entrees (Route, Climatisation, Info passagers,
-// Diagnostics) affichent un texte d'espace reserve -- ce ne sont pas des
-// modules implementes.
+// bandeau du bas. Meme logique pour la sidebar, via le Loader plus bas :
+// seul "Dashboard" charge un contenu reel, les autres entrees (Route,
+// Climatisation, Info passagers, Diagnostics) chargent Placeholder.qml --
+// ce ne sont pas des modules implementes, et ce deliberement (voir README,
+// section "Scalabilite et Navigation").
 // =============================================================================
 Window {
     id: window
@@ -336,20 +337,17 @@ Window {
         }
 
         // ---- Vues non implementees : espace reserve, pas de fausses donnees -
+        // Placeholder.qml est un composant de rendu pur au meme titre que
+        // SpeedometerGauge/ThrottleGauge/NavSidebar : il ne recoit qu'un
+        // texte, jamais de donnee vehicule. C'est le point d'ancrage ou
+        // brancher un futur composant reel (ex. ClimateView.qml) sans toucher
+        // ni a la sidebar ni au Loader ci-dessus.
         Component {
             id: placeholderView
 
-            Item {
+            Placeholder {
                 anchors.fill: parent
-
-                Text {
-                    anchors.centerIn: parent
-                    text: window.tr.placeholderModule
-                    color: Theme.onSurfaceVariant
-                    font.family: Theme.fontUi
-                    font.pixelSize: 20
-                    font.weight: Font.Medium
-                }
+                message: window.tr.placeholderModule
             }
         }
     }
