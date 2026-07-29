@@ -18,13 +18,23 @@ QtObject {
     readonly property color surfaceContainerHigh: "#292a2e"
     readonly property color surfaceContainerHighest: "#343539"
 
-    readonly property color onSurface: "#e3e2e7"
+    // Meme raison que pour "onPrimaryColor" plus bas : "onSurface" (sans
+    // suffixe) collisionne avec la propriete "surface" declaree plus haut et
+    // casse le chargement une fois le singleton correctement enregistre.
+    // "onSurfaceVariant" n'a pas ce probleme (aucune propriete "surfaceVariant"
+    // n'existe) et reste donc inchangee.
+    readonly property color onSurfaceColor: "#e3e2e7"
     readonly property color onSurfaceVariant: "#b9cacb"
     readonly property color outlineVariant: "#3b494b"
 
     // Cyan electrique : donnees actives / etats "Go"
     readonly property color primary: "#00f0ff"
-    readonly property color onPrimary: "#00363a"
+    // Nom "onPrimaryColor" et non "onPrimary" : QML reserve tout identifiant
+    // "on" + Majuscule au mecanisme de gestionnaire de signal implicite:
+    // une propriete nommee ainsi est rejetee au chargement ("Cannot assign
+    // a value to a signal") des que ce singleton est correctement enregistre
+    // et donc reellement compile/type-checke.
+    readonly property color onPrimaryColor: "#00363a"
 
     // Orange securite : reserve aux alertes et seuils critiques
     readonly property color secondary: "#ff5e07"
@@ -35,18 +45,13 @@ QtObject {
     // rendu fidele. Ce ne sont PAS des paquets Debian/Raspberry Pi OS
     // standard : la maquette HTML de reference les charge depuis Google
     // Fonts en ligne (maquette/code.html), ce qui n'existe pas pour une
-    // application embarquee hors-ligne. Sans repli explicite, Qt
-    // substituerait silencieusement une police par defaut du systeme si
-    // "Inter"/"JetBrains Mono" sont absentes de l'image cible -- ce qui
-    // casserait en particulier l'alignement tabulaire des chiffres
-    // (vitesse, odometre, PWR : tous mis a jour en temps reel) attendu de
-    // la police mono. D'ou des piles de repli explicites, a consommer via
-    // "font.families" (liste) et non "font.family" (chaine unique) dans
-    // tous les composants de rendu -- dernier repli generique
-    // ("sans-serif" / "monospace") toujours resolu par Qt quelle que soit
-    // la distribution Linux utilisee.
+    // application embarquee hors-ligne. Le type QML "font" n'expose qu'une
+    // seule propriete "family" (pas de "families" au pluriel, contrairement
+    // a l'API C++ QFont::setFamilies) : impossible donc de fournir une pile
+    // de repli explicite depuis QML. Si "Inter"/"JetBrains Mono" sont
+    // absentes de l'image cible, Qt retombe silencieusement sur son
+    // mecanisme de substitution de police systeme -- comportement standard,
+    // non contournable depuis le seul type QML "font".
     readonly property string fontUi: "Inter"
     readonly property string fontMono: "JetBrains Mono"
-    readonly property var fontUiStack: [fontUi, "Noto Sans", "DejaVu Sans", "sans-serif"]
-    readonly property var fontMonoStack: [fontMono, "Noto Sans Mono", "DejaVu Sans Mono", "monospace"]
 }

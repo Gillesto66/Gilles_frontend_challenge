@@ -47,7 +47,7 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             text: "PWR"
             color: Theme.primary
-            font.families: Theme.fontUiStack
+            font.family: Theme.fontUi
             font.pixelSize: 12
             font.weight: Font.Bold
             font.letterSpacing: 2
@@ -96,7 +96,7 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             text: root._animatedPercent.toFixed(0) + " %"
             color: Theme.primary
-            font.families: Theme.fontMonoStack
+            font.family: Theme.fontMono
             font.pixelSize: 16
             font.weight: Font.Medium
         }

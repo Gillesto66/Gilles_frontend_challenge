@@ -16,7 +16,13 @@ var fr = {
     sysStatus: "SYS OK",
     odometerLabel: "ODO",
     throttleLabel: "PWR",
-    testInputLabel: "Entree test (pedale simulee)"
+    testInputLabel: "Entree test (pedale simulee)",
+    navDashboard: "Tableau de bord",
+    navRoute: "Itineraire",
+    navClimate: "Climatisation",
+    navPassenger: "Info passagers",
+    navDiagnostics: "Diagnostics",
+    placeholderModule: "Module en cours de developpement"
 };
 
 var en = {
@@ -26,7 +32,13 @@ var en = {
     sysStatus: "SYS OK",
     odometerLabel: "ODO",
     throttleLabel: "PWR",
-    testInputLabel: "Test input (simulated pedal)"
+    testInputLabel: "Test input (simulated pedal)",
+    navDashboard: "Dashboard",
+    navRoute: "Route",
+    navClimate: "Climate",
+    navPassenger: "Passenger Info",
+    navDiagnostics: "Diagnostics",
+    placeholderModule: "Module under development"
 };
 
 function get(lang) {
