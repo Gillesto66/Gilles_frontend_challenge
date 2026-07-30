@@ -38,6 +38,7 @@ int main(int argc, char *argv[])
     const char *candidates[] = {
         ":/qt/qml/Dashboard/Main.qml",
         ":/qt-project.org/imports/Dashboard/Main.qml",
+        ":/Dashboard/Main.qml",
     };
     QString mainQml = QLatin1String(candidates[0]);
     for (const char *candidate : candidates) {
